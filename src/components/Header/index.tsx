@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Content , Logo } from './style'
+import { Container, Content, Logo } from './style'
 import logoImg from '../../assets/logo.png'
 export default function Header() {
     return (
