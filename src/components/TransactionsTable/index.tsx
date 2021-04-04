@@ -1,20 +1,10 @@
-import React, { useState, useEffect } from 'react';
 import { Container } from './style'
-import { api } from '../../services/api'
+import { useTransactions } from '../../hooks/useTransactions';
+import convertKoins from '../../utils/convertKoins'
 
-interface ITransaction {
-    id: number
-    amount: number;
-    title: string;
-    category: string;
-    date: Date
-}
 export default function TransactionsTable() {
-    const [transactions, setTransactions] = useState<ITransaction[]>([]);
-    useEffect(() => {
-        api.get<ITransaction[]>('transactions')
-            .then((response) => setTransactions(response.data))
-    }, [])
+
+    const { transactions } = useTransactions()
 
     return (
         <Container>
@@ -33,9 +23,11 @@ export default function TransactionsTable() {
                         return (
                             <tr key={transaction.id}>
                                 <td>{transaction.title}</td>
-                                <td className="deposit">K${transaction.amount}</td>
+                                <td className={transaction.type}>{convertKoins(transaction.amount)}</td>
                                 <td>{transaction.category}</td>
-                                <td>{transaction.date}</td>
+                                <td>
+                                    {new Intl.DateTimeFormat('pt-BR').format(new Date(transaction.date))}
+                                </td>
                             </tr>
                         )
                     })}
